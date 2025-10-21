@@ -1,0 +1,291 @@
+{
+	"info": {
+		"_postman_id": "8e491f77-e4a5-4f34-9d79-056bf260fdd3",
+		"name": "Yuliia_Hudyma_mongo_db",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31010200"
+	},
+	"item": [
+		{
+			"name": "Get all documents",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/planets",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"planets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New document",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"pm.environment.set(\"docId\", jsonData._id);\r",
+							"\r",
+							"pm.test(\"Статус 201 Created\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Має ID документа\", function () {\r",
+							"    pm.expect(jsonData).to.have.property(\"_id\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\": \"Moon\",\r\n        \"orderFromSun\": 8,\r\n        \"hasRings\": false,\r\n        \"mainAtmosphere\": [\r\n            \"N\",\r\n            \"O2\",\r\n            \"Ar\"\r\n        ],\r\n        \"surfaceTemperatureC\": {\r\n            \"min\": -100,\r\n            \"max\": 82.8,\r\n            \"mean\": 15\r\n        }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}planets",
+					"host": [
+						"{{URL}}planets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get document",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () { \r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"OK\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}planets/{{docId}}",
+					"host": [
+						"{{URL}}planets"
+					],
+					"path": [
+						"{{docId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update document",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Оновлені дані\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.eql(\"Yuliia's planet\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Yuliia's planet\",\r\n    \"orderFromSun\": 11,\r\n    \"hasRings\": false,\r\n    \"mainAtmosphere\": [\r\n        \"N\",\r\n        \"O2\",\r\n        \"Ar\"\r\n    ],\r\n    \"surfaceTemperatureC\": {\r\n        \"min\": -100,\r\n        \"max\": 82.8,\r\n        \"mean\": 15\r\n    },\r\n    \"createdAt\": \"2025-10-20T17:24:11.653Z\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}planets/{{docId}}",
+					"host": [
+						"{{URL}}planets"
+					],
+					"path": [
+						"{{docId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete document",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							" var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Статус 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Повідомлення вірне\", function () {",
+							"    pm.expect(jsonData.message).to.eql(\"Документ видалено\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Ribeira Charming Duplex\",\r\n  \"summary\": \"Fantastic duplex apartment with three bedrooms, located in the historic center of Porto.\",\r\n  \"space\": \"Privileged views of the Douro River and Ribeira square, our apartment offers a unique experience.\",\r\n  \"description\": \"Fantastic duplex apartment with three bedrooms, located in the historic center of Porto. Ideal for families or groups.\",\r\n  \"neighborhood_overview\": \"In the neighborhood of the river, you can find several restaurants as well as traditional shops and bars.\",\r\n  \"notes\": \"Lose yourself in the narrow streets and staircases zone, have lunch in a riverside restaurant, and enjoy the local charm.\",\r\n  \"transit\": \"Transport: • Metro station and S. Bento railway 5min; • Bus stop a 50 meters walk.\",\r\n  \"access\": \"We are always available to help guests. The house is fully available to them during their stay.\",\r\n  \"interaction\": \"Cot - 10 € / night Dog - € 7,5 / night\",\r\n  \"house_rules\": \"Make the house your home...\",\r\n  \"property_type\": \"House\",\r\n  \"room_type\": \"Entire home/apt\",\r\n  \"bed_type\": \"Real Bed\",\r\n  \"minimum_nights\": \"2\",\r\n  \"maximum_nights\": \"30\",\r\n  \"cancellation_policy\": \"moderate\",\r\n  \"createdAt\": \"2025-10-20T19:26:00.000Z\"\r\n}"
+				},
+				"url": {
+					"raw": "{{URL}}planets/{{docId}}",
+					"host": [
+						"{{URL}}planets"
+					],
+					"path": [
+						"{{docId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Limit documents",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}planets?limit=2",
+					"host": [
+						"{{URL}}planets"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search with parameters",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}planets/search/query?name=moon",
+					"host": [
+						"{{URL}}planets"
+					],
+					"path": [
+						"search",
+						"query"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "moon"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
